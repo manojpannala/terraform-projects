@@ -50,9 +50,10 @@ resource "aws_internet_gateway" "myapp-igw" {
   }
 }
 
-resource "aws_security_group" "myapp-sg" {
-  name = "myapp-sg"
+resource "aws_default_security_group" "default-sg" {
+  # name = "myapp-sg"
   vpc_id = aws_vpc.myapp-vpc.id
+  
   ingress {
     cidr_blocks = [ var.myip ]
     description = "Ingress SSH"
@@ -88,9 +89,9 @@ resource "aws_security_group" "myapp-sg" {
     # self = false
     to_port = 0
   } 
-  
+
   tags = {
-    Name: "${var.env_prefix}-sg"
+    Name: "${var.env_prefix}-default-sg"
   }
 
 }
