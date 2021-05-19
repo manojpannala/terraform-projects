@@ -2,51 +2,28 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-variable "subnet_cidr_block" {
+variable subnet_cidr_block {
   description = "subnet cidr block"
 }
-variable "vpc_cidr_block" {
+variable vpc_cidr_block {
   description = "vpc cidr block"
 }
-variable "environment" {
-  description = "development environment"
-}
+variable avail_zone {}
 
 
-resource "aws_vpc" "development-vpc" {
+
+resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc_cidr_block
   tags = {
-    Name: "development"
-    # vpc_env: "dev"
+    Name: var.cidr_blocks[0].name
   }
 }
 
-resource "aws_subnet" "dev-subnet-1" {
+resource "aws_subnet" "myapp-subnet-1" {
   vpc_id = aws_vpc.development-vpc.id
   cidr_block = var.subnet_cidr_block
+  availability_zone = var.avail_zone
     tags = {
-    Name: "subnet-dev-1"
+    Name: var.cidr_blocks[0].name
   }
-}
-
-data "aws_vpc" "existing-vpc" {
-  default = true
-}
-
-# SUBNET-2
-# resource "aws_subnet" "dev-subnet-2" {
-#   vpc_id = data.aws_vpc.existing-vpc.id
-#   cidr_block = var.subnet_cidr_block
-#   availability_zone = "eu-central-1b"
-#     tags = {
-#     Name: "subnet-dev-2"
-#   }
-# }
-
-output "dev-vpc-id" {
-  value = aws_vpc.development-vpc.id
-}
-
-output "dev-subnet-id" {
-  value = aws_subnet.dev-subnet-1.id
 }
