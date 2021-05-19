@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.avail_zone
+  region = eu-central-1
 }
 
 variable vpc_cidr_block {
