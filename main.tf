@@ -53,7 +53,7 @@ resource "aws_internet_gateway" "myapp-igw" {
 resource "aws_security_group" "myapp-sg" {
   name = "myapp-sg"
   vpc_id = aws_vpc.myapp-vpc.id
-  ingress = [ {
+  ingress {
     cidr_blocks = [ var.myip ]
     description = "Ingress SSH"
     from_port = 22
@@ -63,9 +63,9 @@ resource "aws_security_group" "myapp-sg" {
     # security_groups = [ "value" ]
     # self = false
     to_port = 22
-  } ]
+  } 
 
-  ingress = [ {
+  ingress {
     cidr_blocks = [ "0.0.0.0/0" ]
     description = "Ingress Nginx"
     from_port = 8080
@@ -75,9 +75,9 @@ resource "aws_security_group" "myapp-sg" {
     # security_groups = [ "value" ]
     # self = false
     to_port = 8080
-  } ]
+  } 
 
-  egress = [ {
+  egress {
     cidr_blocks = [ "0.0.0.0/0" ]
     description = "Egress Nginx"
     from_port = 0
@@ -87,7 +87,8 @@ resource "aws_security_group" "myapp-sg" {
     # security_groups = [ "value" ]
     # self = false
     to_port = 0
-  } ]
+  } 
+  
   tags = {
     Name: "${var.env_prefix}-sg"
   }
