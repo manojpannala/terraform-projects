@@ -16,7 +16,7 @@ variable "environment" {
 resource "aws_vpc" "development-vpc" {
   cidr_block = var.vpc_cidr_block
   tags = {
-    Name: "development",
+    Name: "development"
     # vpc_env: "dev"
   }
 }
