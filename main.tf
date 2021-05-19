@@ -14,6 +14,7 @@ variable avail_zone {}
 
 variable env_prefix {}
 
+variable myip {}
 
 resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc_cidr_block
@@ -47,4 +48,48 @@ resource "aws_internet_gateway" "myapp-igw" {
   tags = {
     Name: "${var.env_prefix}-igw"
   }
+}
+
+resource "aws_security_group" "myapp-sg" {
+  name = "myapp-sg"
+  vpc_id = aws_vpc.myapp-vpc.id
+  ingress = [ {
+    cidr_blocks = [ var.myip ]
+    description = "Ingress SSH"
+    from_port = 22
+    # ipv6_cidr_blocks = [ "value" ]
+    # prefix_list_ids = [ "value" ]
+    protocol = "tcp"
+    # security_groups = [ "value" ]
+    # self = false
+    to_port = 22
+  } ]
+
+  ingress = [ {
+    cidr_blocks = [ "0.0.0.0/0" ]
+    description = "Ingress Nginx"
+    from_port = 8080
+    # ipv6_cidr_blocks = [ "value" ]
+    # prefix_list_ids = [ "value" ]
+    protocol = "tcp"
+    # security_groups = [ "value" ]
+    # self = false
+    to_port = 8080
+  } ]
+
+  egress = [ {
+    cidr_blocks = [ "0.0.0.0/0" ]
+    description = "Egress Nginx"
+    from_port = 0
+    # ipv6_cidr_blocks = [ "value" ]
+    prefix_list_ids = []
+    protocol = "-1"
+    # security_groups = [ "value" ]
+    # self = false
+    to_port = 0
+  } ]
+  tags = {
+    Name: "${var.env_prefix}-sg"
+  }
+
 }
