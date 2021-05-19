@@ -16,7 +16,7 @@ variable env_prefix {}
 
 variable myip {}
 
-variable instance_type {}
+variable my_instance {}
 
 resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc_cidr_block
@@ -117,7 +117,7 @@ output "aws_ami_id" {
 
 resource "aws_instance" "myapp-server" {
   ami = data.aws_ami.latest-amazon-linux-image.id 
-  instance_type = var.instance_type
+  instance_type = var.my_instance
 
   subnet_id = aws_subnet.myapp-subnet-1.id
   vpc_security_group_ids = [aws_default_security_group.default-sg.id]
