@@ -2,8 +2,8 @@
 
 #tfstates
 
-*.tfstates
-*.tfstates.*
+*.tfstate
+*.tfstate.*
 
 #tfvars
 *.tfvars
